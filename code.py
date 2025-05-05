@@ -3,32 +3,64 @@
 #
 #
 
-import time
-import usb_midi
-import adafruit_midi
-import board
+import time, usb_midi, adafruit_midi, board, busio, displayio, adafruit_displayio_ssd1306, terminalio, os
 
 from adafruit_simplemath import map_range
+from adafruit_display_text import label
 
+from i2cdisplaybus import I2CDisplayBus
 from analogio import AnalogIn
 from adafruit_midi.note_on import NoteOn
 from adafruit_midi.note_off import NoteOff
 from adafruit_midi.pitch_bend import PitchBend
 from adafruit_midi.control_change import ControlChange
 
-pot_1 = AnalogIn(board.GP26)
-pot_2 = AnalogIn(board.GP27)
 
-midi = adafruit_midi.MIDI(midi_out=usb_midi.ports[1], out_channel=0)
+displayio.release_displays()
+i2c = busio.I2C(board.GP15, board.GP14)
+display_bus = I2CDisplayBus(i2c, device_address=0x3C)
+display = adafruit_displayio_ssd1306.SSD1306(display_bus, width=128, height=64)
 
-print("Default output MIDI channel:", midi.out_channel + 1)
+# Make the display context
+splash = displayio.Group()
+display.root_group = splash
 
-PB_VALUE_RANGE = 16384
+color_bitmap = displayio.Bitmap(128, 64, 1)
+color_palette = displayio.Palette(1)
+color_palette[0] = 0xFFFFFF  # White
 
-def pb_value(pot_value):
-    return min(int(pot_value * (PB_VALUE_RANGE / 65535)), PB_VALUE_RANGE - 1)
+bg_sprite = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=0)
+splash.append(bg_sprite)
+
+# Draw a smaller inner rectangle
+inner_bitmap = displayio.Bitmap(118, 54, 1)
+inner_palette = displayio.Palette(1)
+inner_palette[0] = 0x000000  # Black
+inner_sprite = displayio.TileGrid(inner_bitmap, pixel_shader=inner_palette, x=5, y=5)
+splash.append(inner_sprite)
+
+# Draw a label
+text = "Hello World!"
+text_area = label.Label(terminalio.FONT, text=text, color=0xFFFF00, x=28, y=28)
+splash.append(text_area)
 
 while True:
+    pass
+
+# pot_1 = AnalogIn(board.GP26)
+# pot_2 = AnalogIn(board.GP27)
+
+
+# midi = adafruit_midi.MIDI(midi_out=usb_midi.ports[1], out_channel=0)
+
+# print("Default output MIDI channel:", midi.out_channel + 1)
+
+# PB_VALUE_RANGE = 16384
+
+# def pb_value(pot_value):
+#     return min(int(pot_value * (PB_VALUE_RANGE / 65535)), PB_VALUE_RANGE - 1)
+
+# while True:
     # midi.send(PitchBend(pb_value(pot_1.value)))
     # midi.send(ControlChange(control=1, value=int(map_range(pot_2.value, 0, 65536, 0, 127))))
-    time.sleep(0.1)
+    # time.sleep(0.1)
