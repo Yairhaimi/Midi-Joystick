@@ -4,7 +4,6 @@ from adafruit_display_text import label
 from i2cdisplaybus import I2CDisplayBus
 
 class display:
-    
     def __init__(self, scl_pin, sda_pin, width, height, device_address=0x3C):
         self.scl_pin = scl_pin
         self.sda_pin = sda_pin
@@ -20,15 +19,19 @@ class display:
         self.display.root_group = displayio.Group()
         self.bitmap = displayio.Bitmap(width, height, 2)
         self.color_palette = displayio.Palette(2)
-        self.color_palette[0] = 0xFFFFFF # white
-        self.color_palette[1] = 0x000000 # black
+        self.color_palette[1] = 0xFFFFFF # white
+        self.color_palette[0] = 0x000000 # black
         
-        self.tilegrid = displayio.TileGrid(self.bitmap, pixel_shader=self.color_palette)
+        sprite = displayio.OnDiskBitmap('./sprites/dpad_up.bmp')
+        
+        self.tilegrid = displayio.TileGrid(sprite, pixel_shader=self.color_palette)
         self.display.root_group.append(self.tilegrid)
+        self.display.root_group.x = 50
+        self.display.root_group.y = 25
+        self.display.root_group.scale = 1
         
-        for x in range(width):
-            for y in range(height):
-                self.bitmap[x,y] = 0
+        
+        
 
 
         
