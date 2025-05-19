@@ -24,18 +24,21 @@ class Display:
         self.display.root_group = displayio.Group()
         
         self.overview_page()
-        # sprite = displayio.OnDiskBitmap('./sprites/dpad_up.bmp')
+    
+    def draw_sprite(self, sprite_path, x, y):
+        sprite = displayio.TileGrid(
+            displayio.OnDiskBitmap(sprite_path), 
+            pixel_shader=self.color_palette, 
+            x=x, 
+            y=y
+        )
         
-        # self.tilegrid = displayio.TileGrid(sprite, pixel_shader=self.color_palette)
-        # self.display.root_group.append(self.tilegrid)
-        # self.display.root_group.x = 50
-        # self.display.root_group.y = 25
-        # self.display.root_group.scale = 1
-            
-    def overview_page(self):
+        self.display.root_group.append(sprite)
+    
+    def draw_title(self, text):
         title = label.Label(
             terminalio.FONT, 
-            text="title title title ", 
+            text=text, 
             color=0xFFFFFF, 
             x=0, 
             y=0, 
@@ -43,45 +46,17 @@ class Display:
         )
         
         self.display.root_group.append(title)
+    
+    def overview_page(self):
+        self.draw_title("title bababooie")
 
-        dpad_sprite = displayio.TileGrid(
-            displayio.OnDiskBitmap('./sprites/dpad_up.bmp'), 
-            pixel_shader=self.color_palette, 
-            x=50, 
-            y=25
-        )
+        for (sprite_path, (x, y)) in [
+            ('./sprites/dpad_up.bmp', (50, 25)),
+            ('./sprites/A_button.bmp', (0, 15)),
+            ('./sprites/B_button.bmp', (0, 35)),
+        ]:
+            self.draw_sprite(sprite_path, x, y)
         
-        a_button = displayio.TileGrid(
-            displayio.OnDiskBitmap('./sprites/A_button.bmp'), 
-            pixel_shader=self.color_palette, 
-            x=0, 
-            y=15
-        )
-        
-        a_pressed = displayio.TileGrid(
-            displayio.OnDiskBitmap('./sprites/A_button_inverted.bmp'), 
-            pixel_shader=self.color_palette, 
-            x=0, 
-            y=15
-        )
-        
-        b_button = displayio.TileGrid(
-            displayio.OnDiskBitmap('./sprites/B_button.bmp'), 
-            pixel_shader=self.color_palette, 
-            x=0, 
-            y=35
-        )
-        
-        b_pressed = displayio.TileGrid(
-            displayio.OnDiskBitmap('./sprites/B_button_inverted.bmp'), 
-            pixel_shader=self.color_palette, 
-            x=0, 
-            y=35
-        )
-        
-        self.display.root_group.append(dpad_sprite)
-        self.display.root_group.append(a_button)
-        self.display.root_group.append(b_button)
         
         
         
