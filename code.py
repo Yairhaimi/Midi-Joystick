@@ -13,12 +13,16 @@ from adafruit_midi.note_off import NoteOff
 from adafruit_midi.pitch_bend import PitchBend
 from adafruit_midi.control_change import ControlChange
 
-from display_handling import display
+from display_handling import Display
+from rotary_encoder import Encoder
 
+oled = Display(board.GP15, board.GP14, 128, 64, device_address=0x3C)
 
-oled = display(board.GP15, board.GP14, 128, 64, device_address=0x3C)
+encoder = Encoder([board.GP2, board.GP3], board.GP29)
 
 while(True):
+    encoder.update()
+    # print(f"encoder value: {encoder.position}, encoder button: {not encoder.button.value}")
     pass
 
 # pot_1 = AnalogIn(board.GP26)

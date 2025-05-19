@@ -3,7 +3,7 @@ import board, busio, displayio, adafruit_displayio_ssd1306, terminalio
 from adafruit_display_text import label
 from i2cdisplaybus import I2CDisplayBus
 
-class display:
+class Display:
     def __init__(self, scl_pin, sda_pin, width, height, device_address=0x3C):
         self.scl_pin = scl_pin
         self.sda_pin = sda_pin
@@ -16,19 +16,74 @@ class display:
         self.display_bus = I2CDisplayBus(self.i2c, device_address=self.device_address)
         self.display = adafruit_displayio_ssd1306.SSD1306(self.display_bus, width=width, height=height)
         
-        self.display.root_group = displayio.Group()
         self.bitmap = displayio.Bitmap(width, height, 2)
         self.color_palette = displayio.Palette(2)
-        self.color_palette[1] = 0xFFFFFF # white
         self.color_palette[0] = 0x000000 # black
+        self.color_palette[1] = 0xFFFFFF # white
         
-        sprite = displayio.OnDiskBitmap('./sprites/dpad_up.bmp')
+        self.display.root_group = displayio.Group()
         
-        self.tilegrid = displayio.TileGrid(sprite, pixel_shader=self.color_palette)
-        self.display.root_group.append(self.tilegrid)
-        self.display.root_group.x = 50
-        self.display.root_group.y = 25
-        self.display.root_group.scale = 1
+        self.overview_page()
+        # sprite = displayio.OnDiskBitmap('./sprites/dpad_up.bmp')
+        
+        # self.tilegrid = displayio.TileGrid(sprite, pixel_shader=self.color_palette)
+        # self.display.root_group.append(self.tilegrid)
+        # self.display.root_group.x = 50
+        # self.display.root_group.y = 25
+        # self.display.root_group.scale = 1
+            
+    def overview_page(self):
+        title = label.Label(
+            terminalio.FONT, 
+            text="title title title ", 
+            color=0xFFFFFF, 
+            x=0, 
+            y=0, 
+            anchor_point=(0,0)
+        )
+        
+        self.display.root_group.append(title)
+
+        dpad_sprite = displayio.TileGrid(
+            displayio.OnDiskBitmap('./sprites/dpad_up.bmp'), 
+            pixel_shader=self.color_palette, 
+            x=50, 
+            y=25
+        )
+        
+        a_button = displayio.TileGrid(
+            displayio.OnDiskBitmap('./sprites/A_button.bmp'), 
+            pixel_shader=self.color_palette, 
+            x=0, 
+            y=15
+        )
+        
+        a_pressed = displayio.TileGrid(
+            displayio.OnDiskBitmap('./sprites/A_button_inverted.bmp'), 
+            pixel_shader=self.color_palette, 
+            x=0, 
+            y=15
+        )
+        
+        b_button = displayio.TileGrid(
+            displayio.OnDiskBitmap('./sprites/B_button.bmp'), 
+            pixel_shader=self.color_palette, 
+            x=0, 
+            y=35
+        )
+        
+        b_pressed = displayio.TileGrid(
+            displayio.OnDiskBitmap('./sprites/B_button_inverted.bmp'), 
+            pixel_shader=self.color_palette, 
+            x=0, 
+            y=35
+        )
+        
+        self.display.root_group.append(dpad_sprite)
+        self.display.root_group.append(a_button)
+        self.display.root_group.append(b_button)
+        
+        
         
         
         
