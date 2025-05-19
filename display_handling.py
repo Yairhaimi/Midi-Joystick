@@ -22,8 +22,6 @@ class Display:
         self.color_palette[1] = 0xFFFFFF # white
         
         self.display.root_group = displayio.Group()
-        
-        self.overview_page()
     
     def draw_sprite(self, sprite_path, x, y):
         sprite = displayio.TileGrid(
@@ -46,16 +44,7 @@ class Display:
         )
         
         self.display.root_group.append(title)
-    
-    def overview_page(self):
-        self.draw_title("title bababooie")
 
-        for (sprite_path, (x, y)) in [
-            ('./sprites/dpad_up.bmp', (50, 25)),
-            ('./sprites/A_button.bmp', (0, 15)),
-            ('./sprites/B_button.bmp', (0, 35)),
-        ]:
-            self.draw_sprite(sprite_path, x, y)
         
         
         
