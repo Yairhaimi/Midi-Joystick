@@ -7,6 +7,7 @@ class Menu:
         self.sprites = sprites
     
     def overview_page(self, title_text="bababooie"):
+        self.display.draw_title(title_text)
 
         for (sprite, (x, y)) in zip(self.sprites, [ (0, 15), (0, 35), (50, 25), ]):
             self.display.draw_sprite(sprite.path, x, y)

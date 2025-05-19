@@ -33,7 +33,7 @@ class Display:
         
         self.display.root_group.append(sprite)
     
-    def draw_title(self, text):
+    def draw_title(self, text, x=0, y=0):
         title = label.Label(
             terminalio.FONT, 
             text=text, 
