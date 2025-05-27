@@ -21,7 +21,7 @@ from sprite import Sprite
 sprites = [
     Sprite("\sprites\A_button.bmp", variations_paths="\sprites\A_button_inverted"),
     Sprite("\sprites\B_button.bmp", variations_paths="\sprites\B_button_inverted"),
-    Sprite("\sprites\dpad_down.bmp", variations_paths=["\sprites\dpad_left.bmp", "\sprites\dpad_right.bmp", "\sprites\dpad_up.bmp",])
+    Sprite("\sprites\dpad.bmp", variations_paths=["\sprites\dpad_left.bmp", "\sprites\dpad_right.bmp", "\sprites\dpad_up.bmp", "\sprites\dpad_down.bmp", ])
 ]
 
 oled_display = Display(board.GP15, board.GP14, 128, 64, device_address=0x3C)

@@ -11,5 +11,7 @@ class Menu:
 
         for (sprite, (x, y)) in zip(self.sprites, [ (0, 15), (0, 35), (50, 25), ]):
             self.display.draw_sprite(sprite.path, x, y)
-        
+    
+    def select(self, sprite_index: int):
+        pass
         
